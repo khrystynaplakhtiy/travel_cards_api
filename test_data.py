@@ -19,6 +19,6 @@ TEST_DATA = {
          "to": "Dubai",
          "transport_type": "plane",
          "seat": "11",
-         "extra_data": ""},
+         "extra_data": ""}
     ]
 }
