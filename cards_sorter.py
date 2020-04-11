@@ -3,48 +3,58 @@ from test_data import TEST_DATA
 
 class CardsSorter:
     def __init__(self, input_data):
-        self.input_data = input_data
+        self.input_data = input_data['cards']
         self.cache = {}
-        self.output = {}
+        self.output = []
 
     def _create_cache(self):
-        for index, card in enumerate(self.input_data["cards"]):
-            self._add_item_to_cache(card["from"], "from", index)
-            self._add_item_to_cache(card["to"], "to", index)
+        try:
+            for index, card in enumerate(self.input_data):
+                self._add_item_to_cache(card["from"], "from", index)
+                self._add_item_to_cache(card["to"], "to", index)
+        except Exception as err:
+            self.output.append(err)
 
-    def _add_item_to_cache(self, city_name, direction, card_id):
+    def _add_item_to_cache(self, city_name, direction_key, card_id):
         if city_name not in self.cache:
             self.cache[city_name] = {}
             self.cache[city_name]["count"] = 0
 
-        if direction not in self.cache[city_name]:
-            self.cache[city_name][direction] = card_id
+        if direction_key not in self.cache[city_name]:
+            self.cache[city_name][direction_key] = card_id
             self.cache[city_name]["count"] += 1
         else:
-            raise Exception(f"There are two cards with {city_name} as {direction}")
+            raise Exception(f"There are two cards with {city_name} as {direction_key}")
 
-    def _get_start(self):
+    def _get_trip_start(self):
         self._create_cache()
-        start = None
-        end = None
+        trip_start = None
+        trip_end = None
         for item in self.cache:
-            start = CardsSorter._validate(self.cache[item], start, "from")
-            end = CardsSorter._validate(self.cache[item], end, "to")
-        return start
+            trip_start = CardsSorter._validate(self.cache[item], trip_start, "from")
+            trip_end = CardsSorter._validate(self.cache[item], trip_end, "to")
+        return trip_start
 
     @staticmethod
-    def _validate(item, direction, direction_key):
-        if item["count"] == 1 and direction_key in item:
-            if direction is None:
-                return item[direction_key]
+    def _validate(cache_item, trip_start_or_end, direction_key):
+        if cache_item["count"] == 1 and direction_key in cache_item:
+            if trip_start_or_end is None:
+                return cache_item[direction_key]
             else:
                 raise Exception(
-                    f"There are two candidates for journey {direction_key}: {direction} and {item[direction_key]}")
+                    f"There are two candidates for journey {direction_key}: {trip_start_or_end} and {cache_item[direction_key]}")
         else:
-            return direction
+            return trip_start_or_end
 
-
+    def sort(self):
+        card_id = int(self._get_trip_start())
+        for _ in self.input_data:
+            self.output.append(self.input_data[card_id])
+            city_to = self.input_data[card_id]['to']
+            if "from" in self.cache[city_to]:
+                card_id = self.cache[city_to]['from']
 
 
 cards_sorter = CardsSorter(TEST_DATA)
-print(cards_sorter._get_start())
+cards_sorter.sort()
+print(cards_sorter.output)
