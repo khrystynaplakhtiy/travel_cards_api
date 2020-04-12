@@ -1,8 +1,7 @@
+import pytest
 from cards_sorter import CardsSorter
 from test_data import TEST_DATA, TEST_DATA_DUPLICATE_END, TEST_DATA_DUPLICATE_FROM, \
     TEST_DATA_DUPLICATE_TO, TEST_DATA_DUPLICATE_START
-
-import pytest
 
 
 def test_create_cache_success():
@@ -60,7 +59,7 @@ def test_sort_success():
         {'from': 'London', 'to': 'Berlin', 'transport_type': 'car', "connection_number": "743", 'seat': '',
          'extra_data': ''},
         {'from': 'Berlin', 'to': 'Warsaw', 'transport_type': 'plane', "connection_number": "SJHA35", 'seat': '45B',
-         'extra_data': ''}]
+         'extra_data': 'Collect your baggage from belt #4'}]
 
     assert expected_output == cards_sorter.output
 
