@@ -14,6 +14,7 @@ def validate_json(document):
                     'from': {'type': 'string', 'required': True},
                     'to': {'type': 'string', 'required': True},
                     'transport_type': {'type': 'string', 'required': True},
+                    'connection_number': {'type': 'string', 'required': True},
                     'seat': {'type': 'string', 'required': True},
                     'extra_data': {'type': 'string', 'required': True}
                 }
@@ -34,7 +35,7 @@ def process_api():
     if cards_sorter.error:
         abort(400, cards_sorter.error)
     else:
-        return make_response(jsonify(cards_sorter.get_sorted_cards()), 200)
+        return make_response(jsonify(cards_sorter.get_sorted_cards_and_message()), 200)
 
 
 @app.errorhandler(404)

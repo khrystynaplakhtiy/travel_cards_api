@@ -6,6 +6,7 @@ class CardsSorter:
         self.input_data = input_data['cards']
         self.cache = {}
         self.output = []
+        self.message = []
         self.error = None
 
     def _create_cache(self):
@@ -43,26 +44,43 @@ class CardsSorter:
         else:
             return trip_start_or_end
 
-    def sort(self, card_id):
+    def _sort(self, card_id):
         for _ in self.input_data:
             self.output.append(self.input_data[card_id])
             city_to = self.input_data[card_id]['to']
             if "from" in self.cache[city_to]:
                 card_id = self.cache[city_to]['from']
 
+    def _prepare_message(self):
+        for index, item in enumerate(self.output):
+            if item['connection_number'] != "":
+                transport = f"{item['transport_type']} {item['connection_number']}"
+            else:
+                transport = item['transport_type']
+            if item['seat'] != "":
+                seat_message = f"Take seat #{item['seat']}"
+            else:
+                seat_message = f"No seat assignment"
+            self.message.append(
+                f"{index + 1}. Take {transport} from {item['from']} to {item['to']}. {seat_message}. {item['extra_data']}")
+        self.message.append(f"{len(self.output)+1}. Your reached your final destination.")
+
     def process_cards(self):
         try:
             self._create_cache()
             card_id = self._get_trip_start()
-            self.sort(card_id)
+            self._sort(card_id)
+            self._prepare_message()
         except Exception as err:
             self.error = err.args[0]
 
-    def get_sorted_cards(self):
-        return {"cards": self.output}
+    def get_sorted_cards_and_message(self):
+        return {"cards": self.output,
+                "message": self.message}
 
 
 if __name__ == '__main__':
     cards_sorter = CardsSorter(TEST_DATA)
     cards_sorter.process_cards()
-    print(cards_sorter.get_sorted_cards())
+    print(cards_sorter.get_sorted_cards_and_message())
+    print(cards_sorter.error)

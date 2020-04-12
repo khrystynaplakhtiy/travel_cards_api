@@ -50,13 +50,17 @@ def test_sort_success():
     cards_sorter = CardsSorter(TEST_DATA)
     cards_sorter._create_cache()
     card_id = cards_sorter._get_trip_start()
-    cards_sorter.sort(card_id)
+    cards_sorter._sort(card_id)
 
     expected_output = [
-        {'from': 'Los Angeles', 'to': 'Dubai', 'transport_type': 'plane', 'seat': '11', 'extra_data': ''},
-        {'from': 'Dubai', 'to': 'London', 'transport_type': 'plane', 'seat': '22B', 'extra_data': ''},
-        {'from': 'London', 'to': 'Berlin', 'transport_type': 'car', 'seat': '', 'extra_data': ''},
-        {'from': 'Berlin', 'to': 'Warsaw', 'transport_type': 'plane', 'seat': '45B', 'extra_data': ''}]
+        {'from': 'Los Angeles', 'to': 'Dubai', 'transport_type': 'plane', "connection_number": "", 'seat': '11',
+         'extra_data': ''},
+        {'from': 'Dubai', 'to': 'London', 'transport_type': 'plane', "connection_number": "ALK28", 'seat': '22B',
+         'extra_data': ''},
+        {'from': 'London', 'to': 'Berlin', 'transport_type': 'car', "connection_number": "743", 'seat': '',
+         'extra_data': ''},
+        {'from': 'Berlin', 'to': 'Warsaw', 'transport_type': 'plane', "connection_number": "SJHA35", 'seat': '45B',
+         'extra_data': ''}]
 
     assert expected_output == cards_sorter.output
 
@@ -75,5 +79,3 @@ def test_process_cards_errors(test_data, exception_message):
     cards_sorter.process_cards()
 
     assert cards_sorter.error == exception_message
-
-
