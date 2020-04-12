@@ -1,21 +1,24 @@
 # Travel Cards API
 ### **Run the app**
 `docker build -t travel_cards_docker:latest .`
+
 `docker run -d -p 5000:5000 travel_cards_docker:latest`
 
 ### **Run the tests**
 `docker exec -it CONTAINER ID /bin/bash`
+
 `pytest`
 
 # API Reference
-The REST API to the travel cards app is described below
+The REST API to the travel cards app is described below.
 
 ### **Get sorted travel cards**
 `POST`
 `http://127.0.0.1:5000/api/v1.0/sort`
 
 Success sample request json:
-```{
+```
+{
     "cards": [
         {"from": "Berlin",
          "to": "Warsaw",
@@ -46,7 +49,8 @@ Success sample request json:
 ```
 
 Success sample response json:
-```{
+```
+{
   "cards": [
     {
       "connection_number": "",
@@ -92,7 +96,8 @@ Success sample response json:
 ```
 
 Fail sample request json:
-```{"cards": [
+```
+{"cards": [
         {"from": "Berlin",
          "to": "Warsaw",
          "transport_type": "plane",
@@ -121,8 +126,33 @@ Fail sample request json:
 }
 ```
 Fail sample response json:
-```{
+```
+{
   "error": "400 Bad Request: There are two cards with Berlin as from"
+}
+```
+
+Fail sample request json:
+```
+{
+    "cards": [
+        {"to": "Warsaw",
+         "transport_type": "plane",
+         "connection_number": "SJHA35",
+         "seat": "45B",
+         "extra_data": ""},
+        {"from": "Dubai",
+         "transport_type": "plane",
+         "connection_number": "SJHA35",
+         "seat": "22B",
+         "extra_data": ""}
+    ]
+}
+```
+Fail sample response json:
+```
+{
+  "error": "400 Bad Request: Wrong json structure"
 }
 ```
 

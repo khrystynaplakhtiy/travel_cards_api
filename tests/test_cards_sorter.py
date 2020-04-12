@@ -1,6 +1,6 @@
 import pytest
 from cards_sorter import CardsSorter
-from test_data import TEST_DATA, TEST_DATA_DUPLICATE_END, TEST_DATA_DUPLICATE_FROM, \
+from tests.test_data import TEST_DATA, TEST_DATA_DUPLICATE_END, TEST_DATA_DUPLICATE_FROM, \
     TEST_DATA_DUPLICATE_TO, TEST_DATA_DUPLICATE_START
 
 

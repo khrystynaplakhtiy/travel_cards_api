@@ -1,6 +1,6 @@
 import pytest
 from app import validate_json
-from test_data import REQ_BAD_STRUCTURE_1, REQ_BAD_STRUCTURE_2, REQ_BAD_STRUCTURE_3, REQ_BAD_STRUCTURE_4, \
+from tests.test_data import REQ_BAD_STRUCTURE_1, REQ_BAD_STRUCTURE_2, REQ_BAD_STRUCTURE_3, REQ_BAD_STRUCTURE_4, \
     REQ_BAD_STRUCTURE_5
 
 
