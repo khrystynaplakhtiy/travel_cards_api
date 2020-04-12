@@ -9,19 +9,14 @@ class CardsSorter:
         self.error = None
 
     def _create_cache(self):
-        try:
-            for index, card in enumerate(self.input_data):
-                self._add_item_to_cache(card["from"], "from", index)
-                self._add_item_to_cache(card["to"], "to", index)
-        except Exception as err:
-            self.error = err.args[0]
-            return
+        for index, card in enumerate(self.input_data):
+            self._add_item_to_cache(card["from"], "from", index)
+            self._add_item_to_cache(card["to"], "to", index)
 
     def _add_item_to_cache(self, city_name, direction_key, card_id):
         if city_name not in self.cache:
             self.cache[city_name] = {}
             self.cache[city_name]["count"] = 0
-
         if direction_key not in self.cache[city_name]:
             self.cache[city_name][direction_key] = card_id
             self.cache[city_name]["count"] += 1
@@ -29,17 +24,11 @@ class CardsSorter:
             raise Exception(f"There are two cards with {city_name} as {direction_key}")
 
     def _get_trip_start(self):
-        self._create_cache()
-        if self.error:
-            return
         trip_start = None
         trip_end = None
-        try:
-            for item in self.cache:
-                trip_start = self._validate(self.cache[item], trip_start, "from")
-                trip_end = self._validate(self.cache[item], trip_end, "to")
-        except Exception as err:
-            self.error = err.args[0]
+        for item in self.cache:
+            trip_start = self._validate(self.cache[item], trip_start, "from")
+            trip_end = self._validate(self.cache[item], trip_end, "to")
         return trip_start
 
     def _validate(self, cache_item, trip_start_or_end, direction_key):
@@ -54,16 +43,20 @@ class CardsSorter:
         else:
             return trip_start_or_end
 
-    def sort(self):
-        card_id = self._get_trip_start()
-        if self.error:
-            return
-        card_id = int(card_id)
+    def sort(self, card_id):
         for _ in self.input_data:
             self.output.append(self.input_data[card_id])
             city_to = self.input_data[card_id]['to']
             if "from" in self.cache[city_to]:
                 card_id = self.cache[city_to]['from']
+
+    def process_cards(self):
+        try:
+            self._create_cache()
+            card_id = self._get_trip_start()
+            self.sort(card_id)
+        except Exception as err:
+            self.error = err.args[0]
 
     def get_sorted_cards(self):
         return {"cards": self.output}
@@ -71,5 +64,5 @@ class CardsSorter:
 
 if __name__ == '__main__':
     cards_sorter = CardsSorter(TEST_DATA)
-    cards_sorter.sort()
+    cards_sorter.process_cards()
     print(cards_sorter.get_sorted_cards())

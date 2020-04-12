@@ -1,13 +1,36 @@
 from flask import Flask, jsonify, request, abort
 from flask import make_response
+from cerberus import Validator
 from cards_sorter import CardsSorter
 
 app = Flask(__name__)
 
-@app.route('/api/sort/v1.0/', methods=['POST'])
+
+def validate_json(document):
+    schema = {
+        'cards': {
+            'type': 'list', 'schema': {
+                'type': 'dict', 'schema': {
+                    'from': {'type': 'string'},
+                    'to': {'type': 'string'},
+                    'transport_type': {'type': 'string'},
+                    'seat': {'type': 'string'},
+                    'extra_data': {'type': 'string'}
+                }
+            }
+        }
+    }
+    v = Validator(schema)
+    return v.validate(document, schema)
+
+
+@app.route('/api/v1.0/sort/', methods=['POST'])
 def process_api():
-    cards_sorter = CardsSorter(request.json)
-    cards_sorter.sort()
+    req = request.json
+    if not validate_json(req):
+        abort(400, "Wrong json structure")
+    cards_sorter = CardsSorter(req)
+    cards_sorter.process_cards()
     if cards_sorter.error:
         abort(400, cards_sorter.error)
     else:
