@@ -25,7 +25,7 @@ def validate_json(document):
     return v.validate(document, schema)
 
 
-@app.route('/api/v1.0/sort/', methods=['POST'])
+@app.route('/api/v1.0/sort', methods=['POST'])
 def process_api():
     req = request.json
     if not validate_json(req):
@@ -49,4 +49,4 @@ def bad_data(error):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', debug=True)

@@ -1,6 +1,3 @@
-from test_data import TEST_DATA
-
-
 class CardsSorter:
     def __init__(self, input_data):
         self.input_data = input_data['cards']
@@ -79,8 +76,4 @@ class CardsSorter:
                 "message": self.message}
 
 
-if __name__ == '__main__':
-    cards_sorter = CardsSorter(TEST_DATA)
-    cards_sorter.process_cards()
-    print(cards_sorter.get_sorted_cards_and_message())
-    print(cards_sorter.error)
+
