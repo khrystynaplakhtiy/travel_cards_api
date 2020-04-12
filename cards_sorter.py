@@ -24,12 +24,12 @@ class CardsSorter:
             raise Exception(f"There are two cards with {city_name} as {direction_key}")
 
     def _get_trip_start(self):
-        trip_start = None
-        trip_end = None
+        trip_start_card_id = None
+        trip_end_card_id = None
         for item in self.cache:
-            trip_start = self._validate(self.cache[item], trip_start, "from")
-            trip_end = self._validate(self.cache[item], trip_end, "to")
-        return trip_start
+            trip_start_card_id = self._validate(self.cache[item], trip_start_card_id, "from")
+            trip_end_card_id = self._validate(self.cache[item], trip_end_card_id, "to")
+        return trip_start_card_id
 
     def _validate(self, cache_item, trip_start_or_end, direction_key):
         if cache_item["count"] == 1 and direction_key in cache_item:

@@ -11,11 +11,11 @@ def validate_json(document):
         'cards': {
             'type': 'list', 'schema': {
                 'type': 'dict', 'schema': {
-                    'from': {'type': 'string'},
-                    'to': {'type': 'string'},
-                    'transport_type': {'type': 'string'},
-                    'seat': {'type': 'string'},
-                    'extra_data': {'type': 'string'}
+                    'from': {'type': 'string', 'required': True},
+                    'to': {'type': 'string', 'required': True},
+                    'transport_type': {'type': 'string', 'required': True},
+                    'seat': {'type': 'string', 'required': True},
+                    'extra_data': {'type': 'string', 'required': True}
                 }
             }
         }
